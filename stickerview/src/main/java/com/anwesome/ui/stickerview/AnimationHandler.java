@@ -12,6 +12,7 @@ public class AnimationHandler extends AnimatorListenerAdapter implements ValueAn
     {{
         startAnim.setDuration(500);
         endAnim.setDuration(500);
+        endAnim.addListener(this);
         startAnim.addUpdateListener(this);
         endAnim.addUpdateListener(this);
     }}

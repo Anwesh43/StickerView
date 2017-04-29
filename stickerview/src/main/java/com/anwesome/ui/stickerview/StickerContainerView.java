@@ -31,10 +31,11 @@ public class StickerContainerView extends View {
         if(time == 0) {
             int w = canvas.getWidth();
             h = canvas.getHeight();
-            initH = h/10;
+            initH = 9*h/10;
+            setY(initH);
             animationHandler = new AnimationHandler(this);
-            stickerContainerButton = new StickerContainerButton(w/2,h/20,h/20);
-            int gap = w/7,x = 3*gap/2,y = 3*gap/2,i = 0;
+            stickerContainerButton = new StickerContainerButton(w/2,h/30,h/20);
+            int gap = w/7,x = 3*gap/2,y = h/10+ 3*gap/2,i = 0;
             for(StickerElement sticker:stickers) {
                 final StickerElement currSticker = sticker;
                 sticker.setDimension(x,y,gap);
@@ -48,6 +49,7 @@ public class StickerContainerView extends View {
                 sticker.setOnTapListener(new StickerElement.OnTapListener() {
                     @Override
                     public void onTap() {
+                        stickerContainerButton.dir *= -1;
                         animationHandler.end(new AnimationHandler.OnEndListener() {
                             @Override
                             public void onEnd() {
@@ -59,6 +61,7 @@ public class StickerContainerView extends View {
             }
         }
         canvas.drawColor(Color.parseColor("#99000000"));
+        stickerContainerButton.draw(canvas,paint);
         for(StickerElement sticker:stickers) {
             sticker.draw(canvas,paint);
         }
@@ -66,11 +69,21 @@ public class StickerContainerView extends View {
     }
 
     public void update(float factor) {
-        setY(h/10+(9*h/10)*factor);
+        setY(initH-(9*h/10)*(factor));
         stickerContainerButton.update(factor);
+        postInvalidate();
 
     }
     public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX(),y = event.getY();
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if(!stickerContainerButton.handleTap(x,y)) {
+                for(StickerElement stickerElement:stickers) {
+                    stickerElement.handleTap(x,y);
+                }
+            }
+
+        }
         return true;
     }
     private class StickerContainerButton {
@@ -90,19 +103,18 @@ public class StickerContainerView extends View {
             canvas.save();
             canvas.translate(x,y);
             canvas.rotate(deg);
+            paint.setColor(Color.WHITE);
+            paint.setStrokeWidth(size/20);
             for(int i=0;i<2;i++) {
                 canvas.save();
                 canvas.scale((1-2*i),1);
-                Path path = new Path();
-                path.moveTo(0, 0);
-                path.lineTo(size,size/2);
-                canvas.drawPath(path,paint);
+                canvas.drawLine(0,0,size/2,size/2,paint);
                 canvas.restore();
             }
             canvas.restore();
         }
         public boolean handleTap(float x,float y) {
-            boolean condition = x>=this.x-size/2 && x<=this.x+size/2 && y>=this.y && y<=this.y+size/2;
+            boolean condition = x>=this.x-size && x<=this.x+size && y>=this.y-size && y<=this.y+size;
             if(condition && animationHandler!=null) {
                 if(dir == 1) {
                     animationHandler.start();

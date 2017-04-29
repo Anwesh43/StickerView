@@ -2,6 +2,7 @@ package com.anwesome.ui.stickerview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
@@ -53,6 +54,7 @@ public class StickerLayout {
     }
     public void show() {
         if(relativeLayout == null && mainBitmap!=null && stickers.size() != 0) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             relativeLayout = new RelativeLayout(activity);
             stickerView = new StickerView(activity,mainBitmap);
             stickerContainerView = new StickerContainerView(activity,stickerView,stickers);
@@ -70,11 +72,10 @@ public class StickerLayout {
                 }
             }
             stickerView.setY(0);
-            stickerContainerView.setY(9*h/10);
             relativeLayout.addView(stickerView,new WindowManager.LayoutParams(w,h));
             relativeLayout.addView(stickerContainerView,new WindowManager.LayoutParams(w,h));
+            stickerContainerView.setY((9*h)/10);
             activity.setContentView(relativeLayout);
-
         }
     }
 }
