@@ -13,10 +13,12 @@ import android.view.View;
  */
 public class StickerContainerView extends View {
     private int time = 0,h,initH;
+    private StickerView stickerView;
     private StickerContainerButton stickerContainerButton;
     private AnimationHandler animationHandler;
-    public StickerContainerView(Context context) {
+    public StickerContainerView(Context context,StickerView stickerView) {
         super(context);
+        this.stickerView = stickerView;
     }
     public void onDraw(Canvas canvas) {
         if(time == 0) {
@@ -71,7 +73,7 @@ public class StickerContainerView extends View {
                     animationHandler.start();
                 }
                 else {
-                    animationHandler.end();
+                    animationHandler.end(null);
                 }
                 dir *= -1;
             }
