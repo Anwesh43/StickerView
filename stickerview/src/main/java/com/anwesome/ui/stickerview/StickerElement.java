@@ -9,8 +9,10 @@ public class StickerElement {
     private Bitmap bitmap;
     private float x,y,size;
     public OnTapListener onTapListener;
-    public StickerElement(Bitmap bitmap,OnTapListener onTapListener) {
+    public StickerElement(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+    public void setOnTapListener(OnTapListener onTapListener) {
         this.onTapListener = onTapListener;
     }
     public void setDimension(float x,float y,float size ){
@@ -26,7 +28,14 @@ public class StickerElement {
         canvas.restore();
     }
     public boolean handleTap(float x,float y) {
-        return x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size;
+        boolean condtion =  x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size;
+        if(condtion && onTapListener != null) {
+            onTapListener.onTap();
+        }
+        return condtion;
+    }
+    public int hashCode() {
+        return bitmap.hashCode()+(int)(x+y);
     }
     public interface OnTapListener {
         void onTap();
