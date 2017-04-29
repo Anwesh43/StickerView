@@ -21,10 +21,11 @@ public class StickerMotionHandler {
         });
     }
     public void handleMotion(View view, MotionEvent event) {
-        float x = event.getX() , y = event.getY(),size = sticker.getSize(),x1 = sticker.getX(),y1 = sticker.getY();
+        float x = event.getX() , y = event.getY();
         if(sticker!=null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    sticker.handleTap(x,y);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if(isDown) {

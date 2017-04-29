@@ -7,17 +7,24 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * Created by anweshmishra on 29/04/17.
  */
 public class StickerView extends View {
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Bitmap currBitmap = null,mainBitmap = null;
+    private Bitmap mainBitmap = null;
     private int w,h;
     private float cbX,cbY;
     private int time = 0;
-    public void setCurrBitmap(Bitmap bitmap) {
-        this.currBitmap = Bitmap.createScaledBitmap(bitmap,w/6,w/6,true);
+    private ConcurrentLinkedQueue<StickerElement> stickerElements = new ConcurrentLinkedQueue<>();
+    private StickerMotionHandler stickerMotionHandler = new StickerMotionHandler();
+    public void setCurrSticker(StickerElement sticker) {
+        StickerElement newSticker = new StickerElement(sticker.getBitmap());
+        newSticker.setDimension(cbX,cbY,w/6);
+        stickerElements.add(newSticker);
+        stickerMotionHandler.setSticker(newSticker);
         postInvalidate();
     }
     public StickerView(Context context,Bitmap mainBitmap) {
@@ -33,21 +40,13 @@ public class StickerView extends View {
             cbY = h/2-w/12;
         }
         canvas.drawBitmap(mainBitmap,0,0,paint);
-        if(currBitmap != null) {
-            canvas.drawBitmap(currBitmap,cbX,cbY,paint);
+        for(StickerElement sticker:stickerElements) {
+            sticker.draw(canvas,paint);
         }
         time++;
     }
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX() , y = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-        }
+        stickerMotionHandler.handleMotion(this,event);
         return true;
     }
 }
