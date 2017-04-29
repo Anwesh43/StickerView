@@ -58,6 +58,7 @@ public class StickerContainerView extends View {
                 });
             }
         }
+        canvas.drawColor(Color.parseColor("#99000000"));
         for(StickerElement sticker:stickers) {
             sticker.draw(canvas,paint);
         }
