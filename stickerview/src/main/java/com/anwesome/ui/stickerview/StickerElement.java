@@ -12,6 +12,18 @@ public class StickerElement {
     public StickerElement(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+    public float getSize() {
+        return size;
+    }
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
+    }
     public void setOnTapListener(OnTapListener onTapListener) {
         this.onTapListener = onTapListener;
     }
@@ -20,6 +32,10 @@ public class StickerElement {
         this.y = y;
         this.size = size;
         this.bitmap = Bitmap.createScaledBitmap(bitmap,(int)size,(int)size,true);
+    }
+    public void setXY(float x,float y) {
+        this.x = x;
+        this.y = y;
     }
     public void draw(Canvas canvas,Paint paint) {
         canvas.save();
