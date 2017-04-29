@@ -13,12 +13,12 @@ public class AnimationHandler implements ValueAnimator.AnimatorUpdateListener{
         startAnim.addUpdateListener(this);
         endAnim.addUpdateListener(this);
     }}
-    private StickerView stickerView;
-    public AnimationHandler(StickerView stickerView) {
-        this.stickerView = stickerView;
+    private StickerContainerView stickerContainerView;
+    public AnimationHandler(StickerContainerView stickerContainerView) {
+        this.stickerContainerView = stickerContainerView;
     }
     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        
+        stickerContainerView.update((float)(valueAnimator.getAnimatedValue()));
     }
     public void start() {
         startAnim.start();
