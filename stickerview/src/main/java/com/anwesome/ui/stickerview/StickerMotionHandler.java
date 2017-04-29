@@ -29,7 +29,7 @@ public class StickerMotionHandler {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if(isDown) {
-                        sticker.setXY(event.getX(),event.getY());
+                        sticker.setXY(event.getX()-sticker.getSize()/2,event.getY()-sticker.getSize()/2);
                     }
                     break;
                 case MotionEvent.ACTION_UP:
